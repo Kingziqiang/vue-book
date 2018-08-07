@@ -1,18 +1,22 @@
 <template>
     <div id="app">
       <MHeader >首页</MHeader>
-      <div class="content">
-        <Swiper :swiperSlides="sliders"></Swiper>
-        <div class="container">
-          <h3>热门图书</h3>
-          <ul>
-            <li v-for="(book,index) in hotBooks">
-              <img :src="book.bookCover" alt="">
-              <b>{{book.bookName}}</b>
-            </li>
-          </ul>
+      <loading v-if="loading"></loading>
+      <template v-else>
+        <div class="content">
+          <Swiper :swiperSlides="sliders"></Swiper>
+          <div class="container">
+            <h3>热门图书</h3>
+            <ul>
+              <li v-for="(book,index) in hotBooks">
+                <img :src="book.bookCover" alt="">
+                <b>{{book.bookName}}</b>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      </template>
+
     </div>
 </template>
 
@@ -20,29 +24,42 @@
   //1.创建组件 2.注册组件 3.父组件中使用
   import MHeader from '../base/MHeader.vue';
   import Swiper from '../base/Swiper.vue';
-  import {getSliders,getHotBooks} from '../api';
+  import loading from '../base/loading.vue';
+// 获取接口
+//import {getSliders,getHotBooks} from '../api';
+  import {getAll} from '../api';
     export default {
        created(){
-         this.getSlid();//获取轮播图数据
-         this.getHot();//获取热门图书数据
+         //this.getSlid();//获取轮播图数据
+         //this.getHot();//获取热门图书数据
+         this.getData();
         },
       data(){
           return {
             sliders:[],
-            hotBooks:[]
+            hotBooks:[],
+            loading:true
           }
       },
       methods:{
         //语法糖代替then
-       async getSlid(){
-         this.sliders= await getSliders();
-        },
-        async getHot(){//将数据放到sliders中
-          this.hotBooks = await getHotBooks();
-        },
+       //async getSlid(){
+       //  this.sliders= await getSliders();
+       // },
+       // async getHot(){//将数据放到sliders中
+       //   this.hotBooks = await getHotBooks();
+       // },
+        async getData(){
+          let [sliders, hotBooks] = await getAll();//返回[sliders,books]
+          this.sliders=sliders;
+          this.hotBooks=hotBooks;
+          this.loading=false;
+        }
+
+
       },
         components: {
-          MHeader,Swiper
+          MHeader,Swiper,loading
         },
     }
 </script>

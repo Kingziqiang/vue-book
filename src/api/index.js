@@ -53,3 +53,8 @@ export let updateBook = (id,data)=>{
 export let addBook = (data)=>{
   return axios.post('/books',data);
 };
+
+//整合轮播图和热门图书的接口
+export let getAll = ()=>{
+  return axios.all([getSliders(),getHotBooks()]);
+};

@@ -46,7 +46,11 @@ http.createServer((req,res)=>{
     res.setHeader('Content-Type','application/json;charset=utf8');
     read(function(b){
       let hot = b.reverse().slice(0,6);
-      res.end(JSON.stringify(hot));
+      //添加一个延迟来观察loading
+      setTimeout(()=>{
+        res.end(JSON.stringify(hot));
+      },500);
+
     })
     return;
   }

@@ -10,7 +10,12 @@ import Collect  from '../components/collect.vue';
 export default new Router({
   routes: [
     {path:'/',redirect:'/home'},
-    {path:'/home',component:Home},
+    //添加路由元信息
+    {
+      path:'/home',
+      component:Home,
+      meta:{keepAlive:true}//设置缓存，默认不缓存
+      },
     {path:'/list',component:List},
     {path:'/add',component:Add},
     {path:'/detail/:did',component:Detail,name:'detail'},

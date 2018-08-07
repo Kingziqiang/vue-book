@@ -53,16 +53,14 @@ http.createServer((req,res)=>{
   if(pathname==='/books'){
     console.log(req.method);
     let id = parseInt(query.id);
-    console.log(id);
     switch (req.method){
       case 'GET':
-        if(id){
+        if(!isNaN(id)){
           read(function(books){
             let book = books.find(item=>item.bookId==id);
             if(!book)book={};//没找到就是undefined
             res.setHeader('Content-Type','application/json;charset=utf8');
             res.end(JSON.stringify(book))
-            console.log(book);
           })
         }else{
           res.setHeader('Content-Type','application/json;charset=utf8');
@@ -73,8 +71,47 @@ http.createServer((req,res)=>{
         }
          break;
       case 'POST':
+
+        let str = '';
+        req.on('data',chunk=>{
+          str+=chunk;
+        });
+        req.on('end',()=>{
+
+          let book = JSON.parse(str);
+          read(function(books){//添加Id
+
+            book.bookId=books.length?books[books.length-1].bookId+1:1;
+            books.push(book);//将新数据添加到books中，books在内存中
+            write(books,()=>{
+              res.end(JSON.stringify(book));
+            })
+
+          })
+        })
         break;
       case 'PUT':
+        if(id){
+          let str='';
+          req.on('data',chunk=>{
+            str+=chunk;
+          });
+          req.on('end',()=>{
+            let book = JSON.parse(str)//转化为对象
+            read(function(books){
+               books = books.map(item=>{
+                 if(item.bookId==id){
+                   return book;
+                 }
+                 return item;//其他书正常返回
+               })
+              write(books,function(){
+                res.end(JSON.stringify(book));
+              })
+            })
+          })
+        }
+
         break;
       case 'DELETE':
         if(id){

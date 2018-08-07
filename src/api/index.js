@@ -58,3 +58,5 @@ export let addBook = (data)=>{
 export let getAll = ()=>{
   return axios.all([getSliders(),getHotBooks()]);
 };
+
+

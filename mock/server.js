@@ -53,7 +53,28 @@ http.createServer((req,res)=>{
 
     })
     return;
+  };
+  //每次加载多少个和是否有更多数据
+  let pageSize = 5;
+  let hasMore = true;
+  //获取前台的的偏移量
+  if(pathname==='/page'){
+    let offset = parseInt(query.offset);
+    read((books)=>{
+      let result=books.reverse().slice(offset,offset+pageSize);
+      //console.log(offset+pageSize);
+      if(books.length<=offset+pageSize){
+        hasMore=false;
+      }
+      res.setHeader('Content-Type','application/json;charset=utf8');
+      //模拟网速过慢
+      setTimeout(()=>{
+        res.end(JSON.stringify({books:result,hasMore:hasMore}));
+      },500);
+    });
+    return;
   }
+
   if(pathname==='/books'){
     console.log(req.method);
     let id = parseInt(query.id);

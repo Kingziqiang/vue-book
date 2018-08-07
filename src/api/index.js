@@ -58,5 +58,8 @@ export let addBook = (data)=>{
 export let getAll = ()=>{
   return axios.all([getSliders(),getHotBooks()]);
 };
-
+//按需加载，每次加载五个;offset前台要告知后台的偏移量
+export let getPage = (offset)=>{
+  return axios.get(`/page?offset=${offset}`);
+};
 

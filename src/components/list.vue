@@ -1,7 +1,8 @@
 <template>
     <div id="app">
       <MHeader :back=true>列表页</MHeader>
-      <div class="content">
+      <!--为content添加滚动事件-->
+      <div class="content" ref="scroll" @scroll="getMore">
         <ul>
           <router-link tag="li" v-for="(item,index) in books" :to="{name:'detail',params:{did:item.bookId}}" :key="index">
             <div>
@@ -15,23 +16,54 @@
             </div>
           </router-link>
         </ul>
+        <button class="btn" @click="getData()">{{loadMore}}</button>
       </div>
     </div>
 </template>
 
 <script>
     import MHeader from '../base/MHeader.vue';
-    import {getBooks,getRemoveBook} from '../api';
+    //用getpage按需加载代替getBooks全部加载
+    import {getBooks,getRemoveBook,getPage} from '../api';
     export default {
         created(){
-          this.getData();//获取全部图书数据
+          this.getData();//获取图书数据
+        },
+        mounted(){
+          //可以通过操作dom来来实现滚动事件,不建议
+//          this.$refs.scroll.addEventListener('scroll',()=>{
+//            console.log(1);
+//          })
         },
         data() {
-            return {books:[]};
+            //天添加loading是为了节流和防抖
+            return {books:[],offset:0,hasMore:true,loading:false};
         },
         methods: {
           async getData(){
-           this.books = await getBooks();
+           if(this.hasMore && !this.loading){
+             this.loading=true;//加载中
+             let{books,hasMore} = await getPage(this.offset);
+             this.books=[...books,...this.books];//新获取的书加上原来获取的书
+             this.loading=false;//加载后
+             this.hasMore =hasMore;
+             this.offset=this.books.length;
+             //alert(this.offset);
+           }
+          },
+          getMore(){
+            //定时器绑定在组件的实例上
+            this.timer=setTimeout(()=>{
+              //每次先清除定时器
+              clearTimeout(this.timer);
+              //卷去的高度 可视区域的高度  总高度
+              let {scrollTop,clientHeight,scrollHeight}=this.$refs.scroll;
+              let goBootom=scrollTop+clientHeight+30;
+              //console.log(100);
+              if(goBootom>scrollHeight){
+                this.getData();
+              }
+            },60);
           },
           async removeBook(id){
             //删除后台数据
@@ -41,7 +73,11 @@
             this.books=this.books.filter((item)=>item.bookId!=id);
           },
         },
-        computed: {},
+        computed: {
+          loadMore(){
+            return this.hasMore? "加载更多...":"没有更多了^_^"
+          }
+        },
         components: {MHeader},
     }
 </script>
@@ -75,5 +111,19 @@
             background: firebrick;
           }
         }
+      .btn{
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 40px;
+        background: deepskyblue;
+        color: white;
+        border: none;
+        outline: none;
+        margin:15px 0;
+        border-radius: 10px;
+        font-size: 20px;
+        width: 90%;
+      }
     }
 </style>

@@ -34,6 +34,58 @@
 //          this.$refs.scroll.addEventListener('scroll',()=>{
 //            console.log(1);
 //          })
+          //下拉刷新页面
+          let curEle = this.$refs.scroll;
+          let top = curEle.offsetTop;
+          //move方法
+          curEle.addEventListener('touchstart',(e)=>{
+            if(curEle.scrollTop!=0 || curEle.offsetTop!=top) return;
+            let startDistance = e.touches[0].pageY;
+            let distance=0;
+            //move方法
+            let move =(e)=>{
+              let target = e.touches[0].pageY;
+              distance = target-startDistance;
+              if(distance>0){
+                if(distance<50){
+                  curEle.style.top=distance+top+'px';
+                }else {
+                  distance=50;
+                  curEle.style.top = distance+top+'px';
+                }
+                //console.log(distance);
+              }else{
+                curEle.removeEventListener('touchmove',move);
+                curEle.removeEventListener('touchend',end);
+              };
+            };
+            let end=(e)=>{
+              clearInterval(this.timer);
+              this.timer=setInterval(()=>{
+                if(distance<=0){
+                  clearInterval(this.timer);
+                  distance=0;
+                  //最后的偏移量
+                  curEle.style.top = top+'px';
+                  //放手后删除事件防止重复绑定
+                  curEle.removeEventListener('touchmove',move);
+                  curEle.removeEventListener('touchend',end);
+                  //获取数据
+                  this.books=[];//先清空数据
+                  this.offset=0;
+                  this.getData();
+                  return;
+                }
+                distance-=1;
+                curEle.style.top = distance+top+'px';
+              },1)
+            };
+            curEle.addEventListener('touchmove',move,false);
+            curEle.addEventListener('touchend',end,false);
+
+          },false);
+
+
         },
         data() {
             //天添加loading是为了节流和防抖

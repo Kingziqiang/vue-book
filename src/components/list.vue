@@ -6,7 +6,7 @@
         <ul>
           <router-link tag="li" v-for="(item,index) in books" :to="{name:'detail',params:{did:item.bookId}}" :key="index">
             <div>
-              <img :src="item.bookCover" alt="">
+              <img v-lazy="item.bookCover" alt="">
             </div>
             <div>
               <h4>{{item.bookName}}</h4>
@@ -115,7 +115,7 @@
               if(goBootom>scrollHeight){
                 this.getData();
               }
-            },60);
+            },40);
           },
           async removeBook(id){
             //删除后台数据

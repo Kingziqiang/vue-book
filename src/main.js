@@ -10,10 +10,19 @@ Vue.config.productionTip = false;
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 //引入样式require styles
 import 'swiper/dist/css/swiper.css';
-Vue.use(VueAwesomeSwiper, /* { default global options } */)
 //使用插件
 Vue.use(VueAwesomeSwiper);
-/* eslint-disable no-new */
+
+//导入懒加载插件
+import VueLazyload from 'vue-lazyload';
+Vue.use(VueLazyload);
+// or with options
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: 'http://p1.so.qhimgs1.com/bdr/_240_/t01b7881611994fe68d.jpg',
+  loading: './static/loading.gif',
+  attempt: 1
+})
 new Vue({
   el: '#app',
   router,

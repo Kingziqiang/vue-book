@@ -12,7 +12,10 @@
               <h4>{{item.bookName}}</h4>
               <p>{{item.bookInfo}}</p>
               <b>{{item.bookPrice}}</b>
-              <button @click.stop="removeBook(item.bookId)">删除</button>
+              <div class="btnClick">
+                <button @click.stop="collectBook(item)">收藏</button>
+                <button @click.stop="removeBook(item.bookId)">删除</button>
+              </div>
             </div>
           </router-link>
         </ul>
@@ -25,6 +28,7 @@
     import MHeader from '../base/MHeader.vue';
     //用getpage按需加载代替getBooks全部加载
     import {getBooks,getRemoveBook,getPage} from '../api';
+    import * as Types from "../store/mutation-types";
     export default {
         created(){
           this.getData();//获取图书数据
@@ -37,6 +41,7 @@
           //下拉刷新页面
           let curEle = this.$refs.scroll;
           let top = curEle.offsetTop;
+          let isMove = false;
           //move方法
           curEle.addEventListener('touchstart',(e)=>{
             if(curEle.scrollTop!=0 || curEle.offsetTop!=top) return;
@@ -44,6 +49,7 @@
             let distance=0;
             //move方法
             let move =(e)=>{
+              isMove=true;
               let target = e.touches[0].pageY;
               distance = target-startDistance;
               if(distance>0){
@@ -53,13 +59,15 @@
                   distance=50;
                   curEle.style.top = distance+top+'px';
                 }
-                //console.log(distance);
               }else{
                 curEle.removeEventListener('touchmove',move);
                 curEle.removeEventListener('touchend',end);
               };
             };
             let end=(e)=>{
+              if(!isMove) return;
+              alert(1)
+              isMove=false;
               clearInterval(this.timer);
               this.timer=setInterval(()=>{
                 if(distance<=0){
@@ -124,6 +132,9 @@
             //this.getData();多了一次请求
             this.books=this.books.filter((item)=>item.bookId!=id);
           },
+          collectBook(book){
+            this.$store.commit(Types.ADDCOLLECT,book);
+          }
         },
         computed: {
           loadMore(){
@@ -161,6 +172,10 @@
             border: none;
             outline: none;
             background: firebrick;
+          }
+          .btnClick {
+            display: flex;
+            justify-content: space-around;
           }
         }
       .btn{

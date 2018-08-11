@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 
 Vue.config.productionTip = false;
 
@@ -22,10 +23,15 @@ Vue.use(VueLazyload, {
   error: 'http://p1.so.qhimgs1.com/bdr/_240_/t01b7881611994fe68d.jpg',
   loading: './static/loading.gif',
   attempt: 1
-})
+});
+router.beforeEach((to,from,next)=>{
+  document.title=to.meta.title;
+  next();
+});
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

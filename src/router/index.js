@@ -15,21 +15,25 @@ export default new Router({
     {
       path:'/home',
       component:()=>import('../components/home.vue'),
-      meta:{keepAlive:true}//设置缓存，默认不缓存
+      meta:{keepAlive:true,title:'首页'}//设置缓存，默认不缓存
       },
     {
       path:'/list',
       component:()=>import('../components/list.vue'),
+      meta:{title:'列表页'}
     },
     {path:'/add',
       component:()=>import('../components/add.vue'),
+      meta:{title:'添加页'}
     },
     {path:'/detail/:did',
       component:()=>import('../components/detail.vue'),
-      name:'detail'
+      name:'detail',
+      meta:{title:'详请页'}
     },
     {path:'/collect',
       component:()=>import('../components/collect.vue'),
+      meta:{title:'收藏'}
     },
     {path:'*',
       redirect:'/home'

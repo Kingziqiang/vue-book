@@ -1,22 +1,24 @@
-# 图书管理应用
+## 图书管理应用
 利用自己所学技术写的一个简单项目
-# 使用说明
-## 克隆项目
+## 使用说明
+```
+# 克隆项目
 git clone 
-## 进入vue-book安装依赖
+# 进入vue-book安装依赖
 cd vue-book
 npm install
-## 启动本地数据库服务
+# 启动本地数据库服务
 node server.js
-## 本地开发环境 访问http://localhost:8080
+# 本地开发环境 访问http://localhost:8080
 npm start
-## 构建生产
+# 构建生产
 npm run build
-
-# 技术栈
+```
+## 技术栈
 - vue2.0+vue-router+vuex（vue全家桶）
 - scroll(滑动)+下拉刷新+点击刷新+vue-lazyload(懒加载)+vue-awesome-swiper(轮播)
 - es6（javascript核心规范）
+- nodeJs
 - less（css预处理器）
 - axios（数据请求）
 - flex布局
@@ -69,3 +71,7 @@ npm run build
     + 防抖和节流:触发scroll事件可能触发n次，可以先设置一个定时器，下次触发时将上一个清除
 
 ## code split 代码分割
+
+## 心得与遗憾
+- 要是在写代码之前先认认真真地把项目各个模块的流程图（或逻辑流程图）先画出来的话，感觉写代码效率会大大提高。（或者说写代码之前先把产品整体的构思与架构先画个图表示出来）
+-遗憾的是：node封装的不是很好，模拟的后台数据，没用到数据库

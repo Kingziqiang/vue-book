@@ -5,9 +5,10 @@
  * @Last Modified time: 2018/8/6 16:14
  */
 "use strict";
-let http = require('http');
-let fs = require('fs');
-let url = require('url');
+const  http = require('http');
+const  fs = require('fs');
+const  url = require('url');
+const  path = require('path');
 
 //获取轮播图 /sliders
 let sliders = require('./sliders');
@@ -153,5 +154,8 @@ http.createServer((req,res)=>{
         break;
         return;
     }
-  }
+  };
+
+
+
 }).listen(3000);

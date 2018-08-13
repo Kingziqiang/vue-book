@@ -28,10 +28,17 @@ npm run build
 - 广告轮播图
 - 下拉刷新
 - 点击刷新
+- 回退
 - 修改图书信息
 - 删除图书
 - 添加图书
 - 收藏图书
+## Demo && 演示
+![1](./_images/index.png)
+![2](./_images/list.png)
+![3](./_images/detail.png)
+![4](./_images/collect.png)
+![5](./_images/add.png)
 ## 主要文件说明
 - mock 模拟数据
 - api 代表的是所有的接口

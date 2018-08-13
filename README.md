@@ -1,26 +1,55 @@
-## 项目用到less,bootstrap,vuex,axios
+# 图书管理应用
+利用自己所学技术写的一个简单项目
+# 使用说明
+## 克隆项目
+git clone 
+## 进入vue-book安装依赖
+cd vue-book
+npm install
+## 启动本地数据库服务
+node server.js
+## 本地开发环境 访问http://localhost:8080
+npm start
+## 构建生产
+npm run build
 
-```
-  npm install less less-loader vuex axios bootstrap
-```
-- mock模拟数据
+# 技术栈
+- vue2.0+vue-router+vuex（vue全家桶）
+- scroll(滑动)+下拉刷新+点击刷新+vue-lazyload(懒加载)+vue-awesome-swiper(轮播)
+- es6（javascript核心规范）
+- less（css预处理器）
+- axios（数据请求）
+- flex布局
+
+## 主要功能
+- loading动画
+- 前台数据图片懒加载
+- 前台向后台请求数据时有数量限定（比如一次返回 5 条数据）
+- 广告轮播图
+- 下拉刷新
+- 点击刷新
+- 修改图书信息
+- 删除图书
+- 添加图书
+- 收藏图书
+## 主要文件说明
+- mock 模拟数据
 - api 代表的是所有的接口
 - base 基础组件
 - components 页面组件
+- store Vuex 状态管理
 
-- 写一个基础组件
+## 写一个基础组件
   1. 创建一个.vue文件
   2. 在需要使用这个组件的父组件中引入这个组件
   3. 在组件中注册
   4. 以标签的形式引入
 
-## 热门图书的功能
+## 主要功能实现思想
 - 先写服务端，确保数据能正常返回
 - 增加api方法，实现调取数据的功能
 - 在那个组件中应用这个api,如果是一个基础组件需要用这些数据，在使用
 这个组件的父级中调用这个方法，将数据传递给基础组件
-
-
 
 ## 路由元信息
 - 实现页面级的缓存
